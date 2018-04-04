@@ -77,11 +77,11 @@ class ResourceView(View):
 
     def handle_validation_error(self, e):
         if isinstance(e, ValidationError):
-            raise
+            raise e
         elif isinstance(e, mongoengine.ValidationError):
             raise ValidationError(serialize_mongoengine_validation_error(e))
         else:
-            raise
+            raise e
 
     def requested_resource(self, request):
         """In the case where the Resource that this view is associated with points to a Document class
