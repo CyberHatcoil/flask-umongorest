@@ -19,7 +19,7 @@ class User(Document):
 @instance.register
 class Test(Document):
     name = fields.StringField()
-    father = fields.ReferenceField(User)
+    father = fields.ListField(fields.ReferenceField(User))
 
     class Meta:
         collection = db.test
