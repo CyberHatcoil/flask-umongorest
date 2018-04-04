@@ -58,8 +58,12 @@ class ResourceView(View):
     def _dispatch_request(self, *args, **kwargs):
         authorized = True if len(self.authentication_methods) == 0 else False
         for authentication_method in self.authentication_methods:
-            if authentication_method().authorized():
-                authorized = True
+            if callable(authentication_method):
+                if authentication_method().authorized():
+                    authorized = True
+            else:
+                if authentication_method.authorized():
+                    authorized = True
         if not authorized:
             return {'error': 'Unauthorized'}, '401 Unauthorized'
 
