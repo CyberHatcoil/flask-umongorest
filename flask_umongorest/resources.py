@@ -3,6 +3,7 @@ from bson.dbref import DBRef
 from bson.objectid import ObjectId
 from flask import request, url_for
 from umongo.fields import ReferenceField, GenericReferenceField, ListField, DictField
+from umongo.frameworks.pymongo import PyMongoReference
 
 try:
     from urllib.parse import urlparse
@@ -383,6 +384,8 @@ class Resource(object):
             return field_value.to_dbref()
         if isinstance(field_value, DBRef):
             return field_value
+        if isinstance(field_value,PyMongoReference):
+            return DBRef(field_value.document_cls.opts.collection_name, field_value.pk)
         return field_value and field_value.to_dbref()
 
     def serialize(self, obj, **kwargs):
