@@ -372,15 +372,11 @@ class Resource(object):
 
     def serialize_list_field(self, field_instance, field_name, field_value, **kwargs):
         """Serialize each item in the list separately."""
-        try:
-            ret = []
-            for val in field_value:
-                res = self.get_field_value(val,field_name,val,**kwargs)
-                ret.append(res)
-            return ret
-            #return [val for val in [self.get_field_value(elem, field_name, field_instance=field_instance.field, **kwargs) for elem in field_value] if val]
-        except Exception as e:
-            print(e)
+        ret = []
+        for val in field_value:
+            res = self.get_field_value(val,field_name,val,**kwargs)
+            ret.append(res)
+        return ret
     def serialize_document_field(self, field_name, field_value, **kwargs):
         """If this field is a reference or an embedded document, either return
         a DBRef or serialize it using a resource found in `related_resources`.

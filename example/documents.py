@@ -14,7 +14,7 @@ class User(Document):
     password = fields.StrField()  # Don't store it in clear in real life !
 
     class Meta:
-        collection = db.user
+        collection = db.demo_user
 
 @instance.register
 class Test(Document):
@@ -22,4 +22,4 @@ class Test(Document):
     father = fields.ListField(fields.ReferenceField(User))
 
     class Meta:
-        collection = db.test
+        collection = db.demo_test

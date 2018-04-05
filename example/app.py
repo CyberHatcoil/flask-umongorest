@@ -50,6 +50,10 @@ class TestView(ResourceView):
 
 
 if __name__ == "__main__":
+    Test.collection.drop()
+    User.collection.drop()
+    User(nick='user1').commit()
+    User(nick='user2').commit()
     users = User.find()
     t = Test(father=[users[0],users[1]]).commit()
     port = int(os.environ.get('PORT', 8000))
