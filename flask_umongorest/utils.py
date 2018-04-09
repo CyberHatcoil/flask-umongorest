@@ -4,6 +4,7 @@ import datetime
 from bson.dbref import DBRef
 from bson.objectid import ObjectId
 import mongoengine
+from umongo import Document
 from umongo.frameworks.pymongo import PyMongoReference
 
 isbound = lambda m: getattr(m, 'im_self', None) is not None
@@ -28,6 +29,8 @@ class MongoEncoder(json.JSONEncoder):
         if isinstance(value, decimal.Decimal):
             return str(value)
         if isinstance(value, PyMongoReference):
+            return str(value.pk)
+        if isinstance(value, Document):
             return str(value.pk)
         return super(MongoEncoder, self).default(value, **kwargs)
 
