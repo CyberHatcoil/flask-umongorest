@@ -646,6 +646,7 @@ class Resource(object):
         if query_order:
             query_courser = query_courser.sort(query_order)
 
+        count = query_courser.count()
         # Evaluate the queryset
         objs = list(query_courser)
 
@@ -664,7 +665,7 @@ class Resource(object):
         else:
             has_more = None
 
-        return objs, has_more
+        return objs, has_more, count
 
     def save_object(self, obj, **kwargs):
         obj.commit()
