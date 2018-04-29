@@ -117,9 +117,9 @@ class ResourceView(View):
             # more data is returned, we include it at the top level of the response dict
             if len(result) == 2:
                 objs, has_more = result
-                extra = {}
+                amount = {}
             elif len(result) == 3:
-                objs, has_more, extra = result
+                objs, has_more, amount = result
             else:
                 raise ValueError('Unsupported value of resource.get_objects')
 
@@ -140,8 +140,8 @@ class ResourceView(View):
             if has_more is not None:
                 ret['has_more'] = has_more
 
-            if extra:
-                ret.update(extra)
+            if amount:
+                ret['amount'] = amount
         else:
             obj = self._resource.get_object(pk)
             ret = self._resource.serialize(obj, params=request.args)
