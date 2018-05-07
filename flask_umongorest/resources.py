@@ -668,6 +668,7 @@ class Resource(object):
         return objs, has_more, count
 
     def save_object(self, obj, **kwargs):
+        obj.ensure_indexes()
         obj.commit()
         obj.reload()
 
