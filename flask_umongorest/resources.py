@@ -360,7 +360,7 @@ class Resource(object):
         (e.g. if the schema defines a DictField(IntField), where all
         the values in the dict should be ints).
         """
-        if field_instance.field:
+        if getattr(field_instance, "field", None):
             return {
                 key: self.get_field_value(elem, field_name, field_instance=field_instance.field, **kwargs)
                 for (key, elem) in field_value.items()
@@ -668,6 +668,7 @@ class Resource(object):
         return objs, has_more, count
 
     def save_object(self, obj, **kwargs):
+        obj.ensure_indexes()
         obj.commit()
         obj.reload()
 
