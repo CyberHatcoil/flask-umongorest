@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 import mongoengine
 from umongo.document import DocumentImplementation
 from umongo.frameworks.pymongo import PyMongoReference
+from umongo.frameworks.pymongo import Reference
 
 isbound = lambda m: getattr(m, 'im_self', None) is not None
 
@@ -31,6 +32,8 @@ class MongoEncoder(json.JSONEncoder):
         if isinstance(value, PyMongoReference):
             return str(value.pk)
         if isinstance(value, DocumentImplementation):
+            return str(value.pk)
+        if isinstance(value, Reference):
             return str(value.pk)
         return super(MongoEncoder, self).default(value, **kwargs)
 
