@@ -35,6 +35,8 @@ class MongoEncoder(json.JSONEncoder):
             return str(value.pk)
         if isinstance(value, Reference):
             return str(value.pk)
+		if hasattr(value, 'dump'):
+            return value.dump()
         return super(MongoEncoder, self).default(value, **kwargs)
 
 
