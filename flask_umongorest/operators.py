@@ -62,9 +62,10 @@ class In(Operator):
         if ',' in value:
             value = value.split(',')
             op = negate and 'nin' or self.op
+            op = '${}'.format(op)
         else:
             op = negate and 'ne' or ''
-        return {field: {'${}'.format(op): value}}
+        return {field: {op: value}}
 
 class Boolean(Operator):
     op = 'exact'
@@ -90,3 +91,21 @@ class Startswith(Operator):
     def apply(self, field, value, negate=False):
         kwargs = self.prepare_queryset_kwargs(field, value, negate)
         return kwargs
+
+
+class InRef(Operator):
+    op = 'inref'
+
+    def prepare_queryset_kwargs(self, field, value, negate):
+        from bson import ObjectId
+        # only use 'in' or 'nin' if multiple values are specified
+        if ',' in value:
+            value = value.split(',')
+            op = negate and 'nin' or self.op
+            op = op.replace('ref', '')
+            op = '${}'.format(op)
+        else:
+            op = negate and 'ne' or ''
+        if isinstance(value, list):
+            value = [ObjectId("{}".format(val)) for val in value]
+        return {field: {op: value}}
