@@ -79,3 +79,14 @@ class Boolean(Operator):
             bool_value = not bool_value
 
         return {field: bool_value}
+
+		
+class Startswith(Operator):
+    op = 'startswith'
+
+    def prepare_queryset_kwargs(self, field, value, negate):
+        return {field: {'$regex' : '^{}'.format(value)}}
+
+    def apply(self, field, value, negate=False):
+        kwargs = self.prepare_queryset_kwargs(field, value, negate)
+        return kwargs
