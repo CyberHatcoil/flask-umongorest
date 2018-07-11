@@ -64,7 +64,7 @@ class In(Operator):
             op = negate and 'nin' or self.op
         else:
             op = negate and 'ne' or ''
-        return {field: {op: value}}
+        return {field: {'${}'.format(op): value}}
 
 class Boolean(Operator):
     op = 'exact'
