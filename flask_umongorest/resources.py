@@ -388,7 +388,10 @@ class Resource(object):
         if isinstance(field_value, DBRef):
             return field_value
         if isinstance(field_value,PyMongoReference):
-            return DBRef(field_value.document_cls.opts.collection_name, field_value.pk)
+            if field_value.document_cls.opts.collection_name:
+                return DBRef(field_value.document_cls.opts.collection_name, field_value.pk)
+            else:
+                return field_value.pk
         return field_value and field_value.to_dbref()
 
     def serialize(self, obj, **kwargs):
