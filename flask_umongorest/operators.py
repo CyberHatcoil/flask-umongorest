@@ -109,3 +109,15 @@ class InRef(Operator):
         if isinstance(value, list):
             value = [ObjectId("{}".format(val)) for val in value]
         return {field: {op: value}}
+    
+
+class Ref(Operator):
+    op = 'ref'
+
+    def prepare_queryset_kwargs(self, field, value, negate):
+        from bson import ObjectId
+        op = negate and 'nin' or self.op
+        op = op.replace('ref', '')
+        op = '${}'.format(op)
+        value = ObjectId("{}".format(value))
+        return {field: value}
