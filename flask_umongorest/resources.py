@@ -220,6 +220,11 @@ class Resource(object):
                 actual_field = self._reverse_rename_fields.get(field, field)
                 if actual_field in all_fields_set:
                     requested_fields.append(actual_field)
+                    
+        if '_not_fields' in params:
+            _not_fields = params['_not_fields'].split(',')
+            for _not_field in _not_fields:
+                requested_fields.remove(_not_field)
 
         return requested_fields
 
