@@ -1,6 +1,7 @@
 import json
 import decimal
 import datetime
+import base64
 from bson.dbref import DBRef
 from bson.objectid import ObjectId
 import mongoengine
@@ -37,6 +38,8 @@ class MongoEncoder(json.JSONEncoder):
             return str(value.pk)
         if hasattr(value, 'dump'):
             return value.dump()
+        if isinstance(value, bytes):
+            return str(base64.b64encode(value))
         return super(MongoEncoder, self).default(value, **kwargs)
 
 
