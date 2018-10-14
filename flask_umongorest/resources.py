@@ -472,7 +472,7 @@ class Resource(object):
         if (request.method == 'PUT' and obj) or request.method == 'POST':
             subresource = self._subresource(obj)
             if subresource:
-                subresource._raw_data = self._raw_data
+                subresource._raw_data = self.raw_data
                 subresource.validate_request(obj=obj)
                 self.data = subresource.data
                 return
